@@ -1,0 +1,329 @@
+DEVSIFT - SIFT THE NOISE. SURFACE THE INSIGHT.
+TEST CASES
+
+============================================================
+TEST CASE 1 — BUG REPORT WITH COMPLETE INFORMATION
+============================================================
+
+INPUT:
+
+The checkout page crashes when I click the Pay Now button.
+This happens every time when using Chrome on Windows 11.
+The issue started after the latest application release.
+Users cannot complete their purchase.
+
+EXPECTED BEHAVIOR:
+
+The system should generate a structured bug ticket containing:
+
+- A concise title describing the checkout crash.
+- A description explaining that checkout crashes when Pay Now
+  is clicked.
+- High severity because users cannot complete their purchase.
+- Checkout/payment as the functional category.
+- Chrome and Windows 11 as environment information.
+- Reproduction steps based only on the provided report.
+- Expected and actual behavior.
+- Appropriate acceptance criteria.
+- Missing information only if something important is actually
+  unavailable.
+
+MANUAL VERIFICATION:
+
+[ ] Title is concise and relevant.
+[ ] Severity is High.
+[ ] Chrome and Windows 11 are extracted.
+[ ] Checkout/payment is identified as the affected area.
+[ ] No unsupported technical root cause is invented.
+[ ] Reproduction steps are based on the report.
+[ ] Acceptance criteria describe the expected fix.
+
+
+============================================================
+TEST CASE 2 — BUG REPORT WITH MISSING INFORMATION
+============================================================
+
+INPUT:
+
+The mobile application sometimes freezes when opening a
+customer profile. I have seen it happen several times, but
+I don't know exactly what causes it. The problem happened
+on my phone yesterday.
+
+EXPECTED BEHAVIOR:
+
+The system should:
+
+- Generate a concise bug title.
+- Describe the intermittent profile-opening freeze.
+- Avoid inventing the phone model, operating system,
+  application version, or exact reproduction steps.
+- Identify missing environment information.
+- Identify missing reproduction information.
+- Avoid assigning Critical or High severity without evidence.
+- Generate reasonable acceptance criteria without inventing
+  technical implementation details.
+
+MANUAL VERIFICATION:
+
+[ ] No phone model is invented.
+[ ] No operating system is invented.
+[ ] No application version is invented.
+[ ] Missing information is explicitly identified.
+[ ] Severity is not incorrectly classified as Critical.
+[ ] The model does not invent a root cause.
+[ ] Reproduction steps only use information actually provided.
+
+
+============================================================
+TEST CASE 3 — MEETING NOTES TO ENGINEERING TICKETS
+============================================================
+
+INPUT:
+
+The product team discussed adding Google login.
+
+Users should be able to sign in using their Google account.
+If Google authentication fails, the application should show
+an error message.
+
+The backend team needs to provide the OAuth configuration.
+
+We also need to make sure existing email/password login
+continues to work.
+
+The team did not decide what exact error message should
+be displayed.
+
+EXPECTED BEHAVIOR:
+
+The system should generate an engineering ticket containing:
+
+- Google login functionality.
+- A user story describing Google account authentication.
+- A description of the requirement.
+- Given/When/Then acceptance criteria.
+- Medium priority because no urgency or blocking impact
+  was specified.
+- Google authentication failure as an edge case.
+- Backend OAuth configuration as a dependency.
+- The exact error message as an open question.
+- Existing email/password login compatibility.
+
+MANUAL VERIFICATION:
+
+[ ] Google login requirement is captured.
+[ ] Existing email/password login is preserved.
+[ ] Authentication failure is captured.
+[ ] OAuth configuration is identified as a dependency.
+[ ] The undecided error message is recorded as an open question.
+[ ] Priority is Medium.
+[ ] No unsupported technical details are invented.
+[ ] Acceptance criteria follow Given/When/Then structure.
+
+
+============================================================
+TEST CASE 4 — PHISHING EMAIL WITH SUSPICIOUS INDICATORS
+============================================================
+
+INPUT:
+
+From: Microsoft Security <security@micros0ft-support.example>
+To: user@company.example
+Subject: URGENT: Your account will be suspended
+Date: Mon, 28 Sep 2026 10:30:00 +0530
+Reply-To: account-recovery@micros0ft-support.example
+X-External: External
+
+Hello,
+
+Your account will be suspended today unless you verify your
+identity immediately.
+
+Please verify your account using the following link:
+
+http://micros0ft-support.example/login/verify
+
+You must enter your username and password to prevent suspension.
+
+Failure to complete verification within 30 minutes will result
+in permanent account suspension.
+
+Regards,
+Microsoft Security Team
+
+EXPECTED BEHAVIOR:
+
+The system should generate a structured phishing/security
+assessment containing:
+
+- External sender origin based on the explicit X-External header.
+- A suspicious or likely-phishing verdict based on the available
+  evidence.
+- Elevated risk based on the combination of indicators.
+- A confidence value between 0 and 100.
+- Sender analysis identifying the suspicious lookalike domain.
+- Header analysis identifying the explicit external indicator and
+  suspicious Reply-To address.
+- Missing SPF, DKIM, or DMARC evidence if those results are not
+  present in the supplied headers.
+- URL analysis identifying the suspicious domain and credential-
+  harvesting path.
+- Social-engineering indicators such as urgency and the account
+  suspension threat.
+- Credential-harvesting indicators based on the request for a
+  username and password.
+- Evidence supporting the assessment.
+- Defensive recommended actions.
+- Human/security review when appropriate.
+
+The system should not claim that the URL was visited or that the
+domain was externally verified.
+
+MANUAL VERIFICATION:
+
+[ ] Sender origin is identified as External.
+[ ] The lookalike domain is identified.
+[ ] The X-External header is recognized as evidence.
+[ ] The suspicious Reply-To address is identified.
+[ ] The HTTP URL is extracted.
+[ ] The credential-harvesting path is identified.
+[ ] Urgency/account suspension is identified as social engineering.
+[ ] The username/password request is identified.
+[ ] SPF/DKIM/DMARC results are not invented.
+[ ] The URL is not claimed to have been visited.
+[ ] Recommended actions are defensive.
+[ ] Human/security review is appropriately indicated.
+[ ] No unsupported technical claims are invented.
+
+
+============================================================
+TEST CASE 5 — .EML WITH REAL MIME ATTACHMENT
+============================================================
+
+INPUT:
+
+A synthetic .eml file containing:
+
+- An external sender.
+- A suspicious lookalike domain.
+- A credential-verification URL.
+- A request for username and password.
+- A real MIME attachment named invoice.exe.
+
+EXPECTED BEHAVIOR:
+
+The system should:
+
+- Parse the .eml file locally.
+- Extract the sender, recipient, subject, headers, and body.
+- Extract the suspicious URL.
+- Detect invoice.exe as an actual MIME attachment.
+- Extract attachment metadata such as filename and MIME type.
+- Identify the executable attachment as a suspicious indicator
+  when supported by the available evidence.
+- Include the attachment in the structured phishing assessment.
+- Recommend that the user does not open or execute the attachment.
+- Avoid opening or executing the attachment during processing.
+- Avoid treating ordinary text such as "Attachment: invoice.exe"
+  in the email body as proof that an actual attachment exists.
+
+MANUAL VERIFICATION:
+
+[ ] The .eml file is parsed successfully.
+[ ] Sender information is extracted.
+[ ] Subject is extracted.
+[ ] Email headers are extracted.
+[ ] The URL is extracted.
+[ ] invoice.exe is detected as a real MIME attachment.
+[ ] Attachment filename is displayed correctly.
+[ ] Attachment MIME type is extracted.
+[ ] The attachment is analyzed using metadata only.
+[ ] The attachment is not executed.
+[ ] The attachment contents are not opened for analysis.
+[ ] The suspicious attachment is reflected in the AI assessment.
+[ ] Recommended actions are defensive.
+[ ] No unsupported attachment behavior is claimed.
+
+
+============================================================
+TEST CASE 6 — EMAIL BODY MENTIONS AN ATTACHMENT BUT NONE EXISTS
+============================================================
+
+INPUT:
+
+A synthetic raw email containing text such as:
+
+Attachment: invoice.exe
+
+but without an actual MIME attachment.
+
+EXPECTED BEHAVIOR:
+
+The system should:
+
+- Parse the email normally.
+- Preserve the text mentioning invoice.exe as part of the email
+  body.
+- Report that no actual MIME attachment was detected.
+- Avoid creating attachment metadata from the body text alone.
+- Allow the AI model to consider the body mention as evidence if
+  relevant, without falsely claiming that the file was attached.
+
+MANUAL VERIFICATION:
+
+[ ] The email body is extracted.
+[ ] The text "Attachment: invoice.exe" is preserved.
+[ ] No actual attachment is reported.
+[ ] No attachment MIME type is invented.
+[ ] No attachment contents are claimed to have been analyzed.
+[ ] The model does not falsely claim that invoice.exe was attached.
+
+
+============================================================
+TEST EXECUTION NOTES
+============================================================
+
+For each test case:
+
+1. Run the application using Streamlit.
+2. Select the appropriate analysis mode.
+3. Enter the test input or upload the required file.
+4. Run the AI analysis.
+5. Compare the generated output against the expected behavior.
+6. Check every manual verification item.
+7. Record any incorrect, missing, or hallucinated information.
+
+For phishing .eml tests:
+
+1. Upload the synthetic .eml file.
+2. Review the locally extracted email information before
+   starting AI analysis.
+3. Confirm URLs and attachment metadata are extracted correctly.
+4. Run the phishing investigation.
+5. Compare the structured security assessment against the
+   expected behavior.
+6. Confirm that no URL was visited and no attachment was executed.
+
+A test passes only when the generated result satisfies the
+important verification criteria without inventing unsupported
+information.
+
+============================================================
+VALIDATION STATUS
+============================================================
+
+The original engineering test cases were manually executed
+successfully.
+
+The phishing workflow was additionally validated using:
+
+- A synthetic suspicious email.
+- An explicit external sender indicator.
+- A typosquatting domain.
+- A credential-harvesting URL.
+- A real MIME executable attachment.
+
+The real MIME attachment test confirmed that the application
+correctly distinguishes an actual attachment from text in the
+email body that merely mentions an attachment.
