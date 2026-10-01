@@ -1289,7 +1289,7 @@ if selected_page == "Home":
 
                 <div class="pipeline-step">
                     <div class="pipeline-index">03</div>
-                    <div class="pipeline-title">Gemini AI</div>
+                    <div class="pipeline-title">OpenRouter AI</div>
                     <div class="pipeline-description">
                         The AI analyzes the input and generates
                         structured information.
@@ -1835,6 +1835,7 @@ elif selected_page == "Bug Report Analyzer":
                         data=generate_bug_analysis_pdf(result),
                         file_name="devsift-bug-analysis.pdf",
                         mime="application/pdf",
+                        on_click="ignore",
                     )
 
                 except Exception as error:
@@ -1996,6 +1997,7 @@ elif selected_page == "Meeting-to-Ticket Refiner":
                             data=generate_meeting_analysis_pdf(result),
                             file_name="devsift-meeting-tickets.pdf",
                             mime="application/pdf",
+                            on_click="ignore",
                         )
 
                 except Exception as error:
@@ -2012,7 +2014,7 @@ elif selected_page == "Phishing Email Investigator":
 
     render_page_header(
         "03 — PHISHING EMAIL INVESTIGATOR",
-        "Investigate suspicious emails without opening them.",
+        "Analyze Suspicious Emails for Phishing Threats.",
         "Analyze email content, sender-origin indicators, headers, URLs, "
         "social-engineering signals, and attachment metadata using a "
         "defensive AI-assisted workflow.",
@@ -2047,7 +2049,7 @@ elif selected_page == "Phishing Email Investigator":
 
     st.warning(
         "Privacy and security notice: email data submitted for AI analysis "
-        "may be transmitted to the configured Gemini API. Do not submit "
+        "may be transmitted to the configured OpenRouter API. Do not submit "
         "confidential business information, passwords, OTPs, API keys, "
         "access tokens, financial secrets, or other sensitive data. "
         "Uploaded .eml files are parsed locally; URLs are not visited and "
@@ -2117,7 +2119,7 @@ elif selected_page == "Phishing Email Investigator":
 
             try:
 
-                # Parse locally first. Nothing is sent to Gemini during
+                # Parse locally first. Nothing is sent to OpenRouter during
                 # parsing, and the parser does not visit URLs or execute
                 # attachments.
                 if uploaded_eml is not None:
@@ -2673,6 +2675,7 @@ elif selected_page == "Phishing Email Investigator":
                     data=generate_phishing_analysis_pdf(result),
                     file_name="devsift-phishing-investigation.pdf",
                     mime="application/pdf",
+                    on_click="ignore",
                 )
 
             except Exception as error:

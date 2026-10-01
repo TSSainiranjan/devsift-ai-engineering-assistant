@@ -18,7 +18,7 @@ AI assistance was used in the following development areas:
 - Prompt engineering
 - Pydantic schema design
 - Streamlit UI development
-- Gemini API integration
+- OpenRouter API integration
 - Error handling
 - Logging
 - PDF text extraction
@@ -219,9 +219,9 @@ Pydantic was used to validate the AI-generated structured output.
 
 ---
 
-## 7. Gemini API Integration
+## 7. OpenRouter API Integration
 
-AI assistance was used while implementing the integration between the application and the Google Gemini API.
+AI assistance was used while implementing the integration between the application and the OpenRouter API.
 
 The integration was designed so that:
 
@@ -232,7 +232,7 @@ Application
 Prompt
      |
      v
-Gemini API
+OpenRouter API
      |
      v
 Structured JSON
@@ -246,7 +246,7 @@ Application Output
 
 The same AI service layer is used for the engineering and phishing workflows.
 
-The Gemini API key is stored in an environment variable rather than being hard-coded into the application.
+The OpenRouter API key is stored in the `OPENROUTER_API_KEY` environment variable rather than being hard-coded into the application.
 
 The final application uses structured response schemas derived from the corresponding Pydantic models.
 
@@ -513,7 +513,7 @@ The developer remained responsible for:
 - Selecting the project scope.
 - Reviewing generated code and suggestions.
 - Configuring the development environment.
-- Managing the Gemini API key.
+- Managing the OpenRouter API key.
 - Running the application.
 - Testing the implementation.
 - Reviewing AI-generated outputs.

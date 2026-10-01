@@ -1,19 +1,38 @@
 from pathlib import Path
 
-from google import genai
+from openrouter import OpenRouter
 
-from config import GEMINI_API_KEY, logger
+from config import OPENROUTER_API_KEY, logger
 from models.bug import BugAnalysis
 from models.meeting import MeetingAnalysis
 from models.phishing import PhishingAnalysis
 
 
-client = genai.Client(api_key=GEMINI_API_KEY)
+# ---------------------------------------------------------
+# OPENROUTER CLIENT
+# ---------------------------------------------------------
+
+client = OpenRouter(
+    api_key=OPENROUTER_API_KEY
+)
 
 
-# ============================================================
+# OpenRouter allows a maximum of 3 models in the
+# model-level fallback array.
+#
+# Nemotron 3 Super has been tested successfully and
+# currently provides much better response time than
+# Nemotron 3.5 Lightning.
+OPENROUTER_MODELS = [
+    "nvidia/nemotron-3-super-120b-a12b:free",
+    "nvidia/nemotron-3.5-lightning:free",
+    "qwen/qwen3.8-27b:free",
+]
+
+
+# ---------------------------------------------------------
 # BUG REPORT ANALYZER
-# ============================================================
+# ---------------------------------------------------------
 
 def load_bug_prompt() -> str:
     prompt_path = (
@@ -22,46 +41,49 @@ def load_bug_prompt() -> str:
         / "bug_prompt.txt"
     )
 
-    return prompt_path.read_text(
-        encoding="utf-8"
-    )
+    return prompt_path.read_text(encoding="utf-8")
 
 
-def analyze_bug_report(
-    bug_report: str,
-) -> BugAnalysis:
-
+def analyze_bug_report(bug_report: str) -> BugAnalysis:
     try:
-
         prompt_template = load_bug_prompt()
 
         prompt = prompt_template.replace(
             "{BUG_REPORT}",
-            bug_report,
+            bug_report
         )
 
         logger.info(
-            "Starting bug report analysis."
+            "Starting bug report analysis with OpenRouter."
         )
 
-        response = client.interactions.create(
-            model="gemini-3.1-flash-lite",
-            input=prompt,
+        response = client.chat.send(
+            models=OPENROUTER_MODELS,
+            messages=[
+                {
+                    "role": "user",
+                    "content": prompt,
+                }
+            ],
             response_format={
-                "type": "text",
-                "mime_type": "application/json",
-                "schema": BugAnalysis.model_json_schema(),
+                "type": "json_schema",
+                "json_schema": {
+                    "name": "BugAnalysis",
+                    "strict": True,
+                    "schema": BugAnalysis.model_json_schema(),
+                },
             },
         )
 
-        if not response.output_text:
+        output_text = response.choices[0].message.content
 
+        if not output_text:
             raise ValueError(
-                "Gemini returned an empty response."
+                "OpenRouter returned an empty response."
             )
 
         result = BugAnalysis.model_validate_json(
-            response.output_text
+            output_text
         )
 
         logger.info(
@@ -71,17 +93,15 @@ def analyze_bug_report(
         return result
 
     except Exception:
-
         logger.exception(
             "Bug report analysis failed."
         )
-
         raise
 
 
-# ============================================================
+# ---------------------------------------------------------
 # MEETING-TO-TICKET REFINER
-# ============================================================
+# ---------------------------------------------------------
 
 def load_meeting_prompt() -> str:
     prompt_path = (
@@ -90,16 +110,6 @@ def load_meeting_prompt() -> str:
         / "meeting_prompt.txt"
     )
 
-    return prompt_path.read_text(
-        encoding="utf-8"
-    )
-
-def load_phishing_prompt() -> str:
-    prompt_path = (
-        Path(__file__).parent.parent
-        / "prompts"
-        / "phishing_prompt.txt"
-    )
     return prompt_path.read_text(encoding="utf-8")
 
 
@@ -108,38 +118,46 @@ def generate_meeting_tickets(
 ) -> MeetingAnalysis:
 
     try:
-
         prompt_template = load_meeting_prompt()
 
         prompt = prompt_template.replace(
             "{MEETING_NOTES}",
-            meeting_notes,
+            meeting_notes
         )
 
         logger.info(
-            "Starting meeting-to-ticket analysis."
+            "Starting meeting-to-ticket analysis with OpenRouter."
         )
 
-        response = client.interactions.create(
-            model="gemini-3.1-flash-lite",
-            input=prompt,
+        response = client.chat.send(
+            models=OPENROUTER_MODELS,
+            messages=[
+                {
+                    "role": "user",
+                    "content": prompt,
+                }
+            ],
             response_format={
-                "type": "text",
-                "mime_type": "application/json",
-                "schema": MeetingAnalysis.model_json_schema(),
+                "type": "json_schema",
+                "json_schema": {
+                    "name": "MeetingAnalysis",
+                    "strict": True,
+                    "schema": MeetingAnalysis.model_json_schema(),
+                },
             },
         )
 
-        if not response.output_text:
+        output_text = response.choices[0].message.content
 
+        if not output_text:
             raise ValueError(
-                "Gemini returned an empty response."
+                "OpenRouter returned an empty response."
             )
 
         result = MeetingAnalysis.model_validate_json(
-            response.output_text
+            output_text
         )
-
+        
         logger.info(
             "Meeting-to-ticket analysis completed successfully."
         )
@@ -147,43 +165,69 @@ def generate_meeting_tickets(
         return result
 
     except Exception:
-
         logger.exception(
             "Meeting-to-ticket analysis failed."
         )
-
         raise
+
+
+# ---------------------------------------------------------
+# PHISHING EMAIL INVESTIGATOR
+# ---------------------------------------------------------
+
+def load_phishing_prompt() -> str:
+    prompt_path = (
+        Path(__file__).parent.parent
+        / "prompts"
+        / "phishing_prompt.txt"
+    )
+
+    return prompt_path.read_text(encoding="utf-8")
+
 
 def analyze_phishing_email(
     email_data: dict,
 ) -> PhishingAnalysis:
+
     try:
         prompt_template = load_phishing_prompt()
 
         prompt = prompt_template.replace(
             "{EMAIL_DATA}",
-            str(email_data),
+            str(email_data)
         )
 
-        logger.info("Starting phishing email analysis.")
+        logger.info(
+            "Starting phishing email analysis with OpenRouter."
+        )
 
-        response = client.interactions.create(
-            model="gemini-3.1-flash-lite",
-            input=prompt,
+        response = client.chat.send(
+            models=OPENROUTER_MODELS,
+            messages=[
+                {
+                    "role": "user",
+                    "content": prompt,
+                }
+            ],
             response_format={
-                "type": "text",
-                "mime_type": "application/json",
-                "schema": PhishingAnalysis.model_json_schema(),
+                "type": "json_schema",
+                "json_schema": {
+                    "name": "PhishingAnalysis",
+                    "strict": True,
+                    "schema": PhishingAnalysis.model_json_schema(),
+                },
             },
         )
 
-        if not response.output_text:
+        output_text = response.choices[0].message.content
+
+        if not output_text:
             raise ValueError(
-                "Gemini returned an empty response."
+                "OpenRouter returned an empty response."
             )
 
         result = PhishingAnalysis.model_validate_json(
-            response.output_text
+            output_text
         )
 
         logger.info(

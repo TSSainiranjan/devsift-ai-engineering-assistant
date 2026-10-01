@@ -186,7 +186,7 @@ PDF Extraction      Email Parsing
         Prompt Template
               |
               v
-         Gemini AI Model
+       OpenRouter AI Model
               |
               v
        Structured JSON
@@ -210,7 +210,7 @@ Input Processing
 Bug Prompt
        |
        v
-Gemini
+OpenRouter
        |
        v
 BugAnalysis
@@ -231,7 +231,7 @@ Meeting Notes / Transcript
 Meeting Prompt
        |
        v
-Gemini
+OpenRouter
        |
        v
 MeetingAnalysis
@@ -268,7 +268,7 @@ Email Body              Email Metadata
           Phishing Prompt
                   |
                   v
-              Gemini
+              OpenRouter
                   |
                   v
         PhishingAnalysis
@@ -286,7 +286,7 @@ Email Body              Email Metadata
 
 - Python
 - Streamlit
-- Google Gemini API
+- OpenRouter API
 - Pydantic
 - PyMuPDF
 - python-dotenv
@@ -360,12 +360,12 @@ Windows:
 pip install -r requirements.txt
 ```
 
-### 5. Configure the Gemini API key
+### 5. Configure the OpenRouter API key
 
 Create a `.env` file in the project root:
 
 ```text
-GEMINI_API_KEY=your_api_key_here
+OPENROUTER_API_KEY=your_api_key_here
 ```
 
 Do not commit the `.env` file to source control.
@@ -585,7 +585,7 @@ Attachment contents are not executed.
 
 ## Privacy and Security Considerations
 
-Email content submitted for AI analysis may be transmitted to the configured Gemini API.
+Email content submitted for AI analysis may be transmitted to the configured OpenRouter API.
 
 Users should avoid submitting confidential information such as:
 

@@ -49,7 +49,7 @@ The application provides three workflows:
                               |
                               v
                      +------------------+
-                     |   Gemini AI      |
+                     |   OpenRouter AI  |
                      |      Model       |
                      +--------+---------+
                               |
@@ -72,7 +72,7 @@ The application provides three workflows:
                      +------------------+
 ```
 
-The application separates local input processing from AI analysis. PDFs and `.eml` files are processed locally before the relevant information is sent to the Gemini model.
+The application separates local input processing from AI analysis. PDFs and `.eml` files are processed locally before the relevant information is sent to the configured model through OpenRouter.
 
 ---
 
@@ -97,7 +97,7 @@ Streamlit Input
         Bug Prompt Template
                |
                v
-           Gemini AI
+           OpenRouter
                |
                v
         Structured JSON
@@ -114,7 +114,7 @@ Streamlit Input
 
 The bug workflow accepts either direct text input or a PDF file.
 
-When a PDF is uploaded, `pdf_service.py` extracts the text locally using PyMuPDF. The extracted text is then passed to the bug prompt before being submitted to Gemini.
+When a PDF is uploaded, `pdf_service.py` extracts the text locally using PyMuPDF. The extracted text is then passed to the bug prompt before being submitted to the configured model through OpenRouter.
 
 ---
 
@@ -130,7 +130,7 @@ Meeting Notes / Transcript
    Meeting Prompt Template
             |
             v
-        Gemini AI
+       OpenRouter
             |
             v
      Structured JSON
@@ -183,7 +183,7 @@ Local Email Parser
            Phishing Prompt
                     |
                     v
-                Gemini
+                                                 OpenRouter
                     |
                     v
           Structured JSON
@@ -211,7 +211,7 @@ The parser extracts email content and metadata without visiting URLs or executin
 
 ## 3. AI Component
 
-The primary AI component is the Google Gemini generative AI model.
+The primary AI component is the OpenRouter AI model.
 
 The AI is responsible for transforming unstructured engineering information or email-security information into structured output according to predefined schemas.
 
@@ -374,12 +374,12 @@ The phishing prompt additionally instructs the model to:
 
 ## 6. Structured Output Validation
 
-The Gemini response is requested in JSON format according to the corresponding Pydantic schema.
+The OpenRouter response is requested in JSON format according to the corresponding Pydantic schema.
 
 ### Bug Workflow
 
 ```text
-Gemini JSON
+OpenRouter JSON
     |
     v
 BugAnalysis
@@ -391,7 +391,7 @@ Validated Bug Ticket
 ### Meeting Workflow
 
 ```text
-Gemini JSON
+OpenRouter JSON
     |
     v
 MeetingAnalysis
@@ -403,7 +403,7 @@ Validated Engineering Tickets
 ### Phishing Workflow
 
 ```text
-Gemini JSON
+OpenRouter JSON
     |
     v
 PhishingAnalysis
@@ -512,7 +512,7 @@ Responsible for:
 
 Responsible for:
 
-- Gemini API communication
+- OpenRouter API communication
 - Loading prompt templates
 - Sending prompts to the AI model
 - Receiving structured responses

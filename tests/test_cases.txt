@@ -131,16 +131,10 @@ INPUT:
 From: Microsoft Security <security@micros0ft-support.example>
 To: user@company.example
 Subject: URGENT: Your account will be suspended
-Date: Mon, 28 Sep 2026 10:30:00 +0530
-Reply-To: account-recovery@micros0ft-support.example
-X-External: External
 
-Hello,
+Your account will be suspended today unless you verify your identity immediately.
 
-Your account will be suspended today unless you verify your
-identity immediately.
-
-Please verify your account using the following link:
+Click the following link to verify your account:
 
 http://micros0ft-support.example/login/verify
 
@@ -149,8 +143,8 @@ You must enter your username and password to prevent suspension.
 Failure to complete verification within 30 minutes will result
 in permanent account suspension.
 
-Regards,
-Microsoft Security Team
+X-External: External
+Reply-To: account-recovery@micros0ft-support.example
 
 EXPECTED BEHAVIOR:
 

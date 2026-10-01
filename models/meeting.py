@@ -5,10 +5,12 @@ from pydantic import BaseModel, Field
 
 class MeetingTicket(BaseModel):
     title: str = Field(
+        min_length=1,
         description="Short, clear title suitable for an engineering ticket."
     )
 
     user_story: str = Field(
+        min_length=1,
         description=(
             "User story written in the format: "
             "As a [user], I want [goal], so that [benefit]."
@@ -16,6 +18,7 @@ class MeetingTicket(BaseModel):
     )
 
     description: str = Field(
+        min_length=1,
         description="Detailed description of the requested functionality."
     )
 
@@ -33,17 +36,26 @@ class MeetingTicket(BaseModel):
 
     edge_cases: list[str] = Field(
         default_factory=list,
-        description="Potential edge cases explicitly mentioned or reasonably implied by the requirements."
+        description=(
+            "Potential edge cases explicitly mentioned "
+            "or reasonably implied by the requirements."
+        )
     )
 
     dependencies: list[str] = Field(
         default_factory=list,
-        description="Systems, features, teams, or prerequisites that the ticket depends on."
+        description=(
+            "Systems, features, teams, or prerequisites "
+            "that the ticket depends on."
+        )
     )
 
     open_questions: list[str] = Field(
         default_factory=list,
-        description="Important questions that must be clarified before implementation."
+        description=(
+            "Important questions that must be clarified "
+            "before implementation."
+        )
     )
 
 

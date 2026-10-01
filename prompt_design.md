@@ -592,7 +592,7 @@ Prompt Template
     +-- Output requirements
     |
     v
-Gemini AI
+OpenRouter AI
     |
     v
 Structured JSON
@@ -622,7 +622,7 @@ Extracted Email Data
 Phishing Prompt
    |
    v
-Gemini
+OpenRouter
    |
    v
 PhishingAnalysis
