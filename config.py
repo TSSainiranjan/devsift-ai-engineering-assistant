@@ -5,12 +5,20 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
+OPENROUTER_API_KEYS = tuple(
+    key.strip()
+    for key in os.getenv("OPENROUTER_API_KEYS", "").split(",")
+    if key.strip()
+)
 
-if not OPENROUTER_API_KEY:
+single_api_key = os.getenv("OPENROUTER_API_KEY", "").strip()
+if single_api_key and single_api_key not in OPENROUTER_API_KEYS:
+    OPENROUTER_API_KEYS += (single_api_key,)
+
+if not OPENROUTER_API_KEYS:
     raise ValueError(
-        "OPENROUTER_API_KEY is not configured. "
-        "Please add it to the .env file."
+        "No OpenRouter API keys are configured. "
+        "Set OPENROUTER_API_KEYS or OPENROUTER_API_KEY in the .env file."
     )
 
 logging.basicConfig(

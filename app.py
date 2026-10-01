@@ -2069,7 +2069,9 @@ elif selected_page == "Phishing Email Investigator":
         [
             "Paste Raw Email",
             "Upload .eml",
-        ]
+        ],
+        key="phishing_input_tabs",
+        on_change="rerun",
     )
 
     pasted_email = ""
@@ -2110,9 +2112,14 @@ elif selected_page == "Phishing Email Investigator":
 
     if analyze_phishing_button:
 
-        if not pasted_email.strip() and uploaded_eml is None:
+        if input_tab.open and not pasted_email.strip():
             st.warning(
-                "Please paste a raw email or upload an .eml file."
+                "Please paste a raw email."
+            )
+
+        elif upload_tab.open and uploaded_eml is None:
+            st.warning(
+                "Please upload an .eml file."
             )
 
         else:
@@ -2122,14 +2129,14 @@ elif selected_page == "Phishing Email Investigator":
                 # Parse locally first. Nothing is sent to OpenRouter during
                 # parsing, and the parser does not visit URLs or execute
                 # attachments.
-                if uploaded_eml is not None:
-                    email_data = parse_eml_file(uploaded_eml)
-                else:
+                if input_tab.open:
                     pasted_file = io.BytesIO(
                         pasted_email.encode("utf-8")
                     )
                     pasted_file.name = "pasted_email.eml"
                     email_data = parse_eml_file(pasted_file)
+                else:
+                    email_data = parse_eml_file(uploaded_eml)
 
                 if not email_data.get("body", "").strip():
                     st.warning(

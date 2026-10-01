@@ -215,6 +215,11 @@ The primary AI component is the OpenRouter AI model.
 
 The AI is responsible for transforming unstructured engineering information or email-security information into structured output according to predefined schemas.
 
+The AI service accepts a comma-separated `OPENROUTER_API_KEYS` list and tries
+the next key when OpenRouter responds with HTTP 401 (rejected key), HTTP 402
+(quota), or HTTP 429 (rate limit). The existing `OPENROUTER_API_KEY` setting
+remains supported for single-key configurations.
+
 ### Bug Report Analyzer
 
 The AI analyzes:

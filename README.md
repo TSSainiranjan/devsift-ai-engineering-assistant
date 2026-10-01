@@ -360,9 +360,17 @@ Windows:
 pip install -r requirements.txt
 ```
 
-### 5. Configure the OpenRouter API key
+### 5. Configure OpenRouter API keys
 
 Create a `.env` file in the project root:
+
+```text
+OPENROUTER_API_KEYS=first_api_key,second_api_key
+```
+
+When one key is rejected or reaches a quota/rate limit, the AI service retries
+the request with the next configured key. The existing single-key setting
+remains supported:
 
 ```text
 OPENROUTER_API_KEY=your_api_key_here

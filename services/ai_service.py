@@ -2,19 +2,10 @@ from pathlib import Path
 
 from openrouter import OpenRouter
 
-from config import OPENROUTER_API_KEY, logger
+from config import OPENROUTER_API_KEYS, logger
 from models.bug import BugAnalysis
 from models.meeting import MeetingAnalysis
 from models.phishing import PhishingAnalysis
-
-
-# ---------------------------------------------------------
-# OPENROUTER CLIENT
-# ---------------------------------------------------------
-
-client = OpenRouter(
-    api_key=OPENROUTER_API_KEY
-)
 
 
 # OpenRouter allows a maximum of 3 models in the
@@ -28,6 +19,33 @@ OPENROUTER_MODELS = [
     "nvidia/nemotron-3.5-lightning:free",
     "qwen/qwen3.8-27b:free",
 ]
+
+
+def _send_chat_request(**request_args):
+    """Retry rejected, quota-limited, or rate-limited keys in order."""
+
+    for key_index, api_key in enumerate(OPENROUTER_API_KEYS):
+        client = OpenRouter(api_key=api_key)
+
+        try:
+            return client.chat.send(**request_args)
+        except Exception as error:
+            response = getattr(error, "response", None)
+            status_code = getattr(error, "status_code", None)
+            if status_code is None and response is not None:
+                status_code = getattr(response, "status_code", None)
+
+            if status_code not in (401, 402, 429):
+                raise
+
+            if key_index == len(OPENROUTER_API_KEYS) - 1:
+                raise
+
+            logger.warning(
+                "OpenRouter API key %d was rejected or reached a quota/rate "
+                "limit; trying the next configured key.",
+                key_index + 1,
+            )
 
 
 # ---------------------------------------------------------
@@ -57,7 +75,7 @@ def analyze_bug_report(bug_report: str) -> BugAnalysis:
             "Starting bug report analysis with OpenRouter."
         )
 
-        response = client.chat.send(
+        response = _send_chat_request(
             models=OPENROUTER_MODELS,
             messages=[
                 {
@@ -129,7 +147,7 @@ def generate_meeting_tickets(
             "Starting meeting-to-ticket analysis with OpenRouter."
         )
 
-        response = client.chat.send(
+        response = _send_chat_request(
             models=OPENROUTER_MODELS,
             messages=[
                 {
@@ -201,7 +219,7 @@ def analyze_phishing_email(
             "Starting phishing email analysis with OpenRouter."
         )
 
-        response = client.chat.send(
+        response = _send_chat_request(
             models=OPENROUTER_MODELS,
             messages=[
                 {
